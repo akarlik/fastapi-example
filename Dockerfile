@@ -1,11 +1,11 @@
-FROM python:3.11-alpine
+FROM python:3.11
 
-ADD . /app
-ADD requirements.txt /app/reqs.txt
+WORKDIR /code
 
-RUN pip install --no-cache-dir --upgrade -r /app/reqs.txt
+COPY ./requirements.txt /code/requirements.txt
 
-WORKDIR /app
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-CMD ["python", "app.py"]
-EXPOSE 3000
+COPY ./app /code/app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3000"]
